@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  /* Wolstein Putts Expert Consulting palette */
+  --color-brand: #2649a7;
+  --color-brand-dark: #1a3884;
+  --color-brand-light: #3a63d4;
+  --color-ink: #1c1c1c;
+  --color-body: #333333;
+  --color-muted: #667085;
+  --color-muted-dark: #475467;
+  --color-border: #d0d5dd;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f6f8fc;
+
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Montserrat", "Inter", system-ui, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body { color: var(--color-body); }
