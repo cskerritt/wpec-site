@@ -46,6 +46,51 @@
       name="description"
       content="Wolstein Putts Expert Consulting is a full-service vocational expert firm with a focus on employment law and matrimonial matters."
     />
+
+    <!-- Static Organization + WebSite JSON-LD so crawlers that don't execute
+         JS still get structured data. React re-emits per-page graphs (keyed by
+         @id) after hydration. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "ProfessionalService",
+            "@id": "https://wpec.expert/#org",
+            "name": "Wolstein Putts Expert Consulting",
+            "alternateName": "WPEC",
+            "url": "https://wpec.expert",
+            "telephone": "+1-917-979-2040",
+            "email": "contact@wpec.expert",
+            "logo": "https://wpec.expert/images/wp-logo-horizontal.svg",
+            "image": "https://wpec.expert/images/wp-logo-horizontal.svg",
+            "areaServed": { "@type": "Country", "name": "United States" },
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "New York",
+              "addressRegion": "NY",
+              "addressCountry": "US"
+            },
+            "sameAs": [
+              "https://www.linkedin.com/company/wolstein-putts/",
+              "https://kwvrs.com"
+            ],
+            "parentOrganization": {
+              "@type": "Organization",
+              "name": "Kincaid Wolstein Vocational and Rehabilitation Services",
+              "url": "https://kwvrs.com"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://wpec.expert/#website",
+            "url": "https://wpec.expert",
+            "name": "Wolstein Putts Expert Consulting",
+            "publisher": { "@id": "https://wpec.expert/#org" }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

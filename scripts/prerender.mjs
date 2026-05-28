@@ -35,6 +35,11 @@ function parseNews() {
 }
 
 const newsItems = parseNews();
+if (newsItems.length === 0) {
+  throw new Error(
+    "parseNews() returned 0 items - src/data/news.ts format changed; update the regex in prerender.mjs",
+  );
+}
 
 const routes = [
   {
@@ -60,6 +65,7 @@ const routes = [
     path: "/privacy-policy",
     title: "Privacy Policy | Wolstein Putts Expert Consulting",
     description: "Privacy policy for Wolstein Putts Expert Consulting.",
+    robots: "noindex,follow",
   },
   ...newsItems.map((n) => ({
     path: `/${n.slug}`,
@@ -77,7 +83,7 @@ function escapeHtml(s) {
     .replace(/'/g, "&#039;");
 }
 
-function inject(html, { title, description, canonical }) {
+function inject(html, { title, description, canonical, robots }) {
   let out = html;
   out = out.replace(
     /<title>[\s\S]*?<\/title>/,
@@ -87,6 +93,12 @@ function inject(html, { title, description, canonical }) {
     /<meta\s+name="description"\s+content="[^"]*"\s*\/?>(\s*)/,
     `<meta name="description" content="${escapeHtml(description)}" />$1`,
   );
+  if (robots) {
+    out = out.replace(
+      /<meta\s+name="robots"\s+content="[^"]*"\s*\/?>/,
+      `<meta name="robots" content="${robots}" />`,
+    );
+  }
   if (/<link\s+rel="canonical"/.test(out)) {
     out = out.replace(
       /<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>(\s*)/,

@@ -66,18 +66,6 @@ export function websiteSchema(): JsonLd {
   };
 }
 
-export function breadcrumbSchema(items: { name: string; url: string }[]): JsonLd {
-  return {
-    "@type": "BreadcrumbList",
-    itemListElement: items.map((item, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      name: item.name,
-      item: item.url,
-    })),
-  };
-}
-
 export function articleSchema(args: {
   title: string;
   description: string;

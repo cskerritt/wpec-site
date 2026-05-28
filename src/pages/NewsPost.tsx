@@ -19,15 +19,16 @@ export default function NewsPost() {
   const { slug = "" } = useParams<{ slug: string }>();
   const post = newsBySlug[slug];
 
-  if (!post) return <NotFound />;
-
-  const url = `${SITE.baseUrl}/${post.slug}`;
+  const url = post ? `${SITE.baseUrl}/${post.slug}` : `${SITE.baseUrl}/404`;
 
   usePageMeta({
-    title: `${post.title} | ${SITE.name}`,
-    description: post.excerpt,
+    title: post ? `${post.title} | ${SITE.name}` : `Page Not Found | ${SITE.name}`,
+    description: post?.excerpt ?? "The page you are looking for could not be found.",
     canonical: url,
+    robots: post ? undefined : "noindex,follow",
   });
+
+  if (!post) return <NotFound />;
 
   return (
     <>

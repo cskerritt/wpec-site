@@ -10,6 +10,11 @@ const BASE = "https://wpec.expert";
 // import TS at build time.
 const newsSource = readFileSync(join(ROOT, "src", "data", "news.ts"), "utf-8");
 const newsSlugs = [...newsSource.matchAll(/slug:\s*"([^"]+)"/g)].map((m) => m[1]);
+if (newsSlugs.length === 0) {
+  throw new Error(
+    "No news slugs parsed from src/data/news.ts - format changed; update the regex in generate-sitemap.mjs",
+  );
+}
 
 const STATIC = ["/", "/about", "/contact", "/privacy-policy"];
 

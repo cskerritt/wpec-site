@@ -111,33 +111,20 @@ const server = createServer(async (req, res) => {
   if (req.method === "POST" && url.pathname === "/api/contact") {
     try {
       const data = await parseBody(req);
-      const { name, email, message } = data;
+      const { name, email, message, company } = data;
+      // Honeypot: bots fill the hidden `company` field. Pretend success and
+      // discard so they don't learn they were caught.
+      if (company) {
+        res.writeHead(200, API_CORS_HEADERS);
+        res.end(JSON.stringify({ success: true }));
+        return;
+      }
       if (!name || !email || !message) {
         res.writeHead(400, API_CORS_HEADERS);
         res.end(JSON.stringify({ error: "name, email, and message are required" }));
         return;
       }
       saveSubmission("contact", data);
-      res.writeHead(200, API_CORS_HEADERS);
-      res.end(JSON.stringify({ success: true }));
-    } catch (err) {
-      res.writeHead(500, API_CORS_HEADERS);
-      res.end(JSON.stringify({ error: err.message || "Server error" }));
-    }
-    return;
-  }
-
-  // POST /api/consultation
-  if (req.method === "POST" && url.pathname === "/api/consultation") {
-    try {
-      const data = await parseBody(req);
-      const { name, email } = data;
-      if (!name || !email) {
-        res.writeHead(400, API_CORS_HEADERS);
-        res.end(JSON.stringify({ error: "name and email are required" }));
-        return;
-      }
-      saveSubmission("consultation", data);
       res.writeHead(200, API_CORS_HEADERS);
       res.end(JSON.stringify({ success: true }));
     } catch (err) {

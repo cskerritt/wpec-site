@@ -24,14 +24,23 @@ export default function About() {
   const { hash } = useLocation();
 
   useEffect(() => {
-    if (hash) {
-      const el = document.querySelector(hash);
-      if (el) {
-        requestAnimationFrame(() => {
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
-        });
-      }
+    if (!hash) return;
+    let el: Element | null = null;
+    try {
+      el = document.querySelector(hash);
+    } catch {
+      return; // malformed hash selector
     }
+    if (!el) return;
+    // Double rAF: on a cold load the section exists in the DOM but fonts and
+    // card content are still settling, so a single frame scrolls to a stale
+    // y-position. Waiting two frames lets layout finalize first.
+    const raf1 = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        el?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+    return () => cancelAnimationFrame(raf1);
   }, [hash]);
 
   usePageMeta({

@@ -21,6 +21,7 @@ export default function Contact() {
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (status === "submitting") return;
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form).entries());
 
